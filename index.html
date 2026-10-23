@@ -1,0 +1,1248 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0F1012">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="健身记录">
+<title>健身记录</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" type="image/png" href="icon-192.png">
+<style>
+:root{--bg:#0F1012;--card:#1A1C20;--inner:#24272C;--line:#2C3036;--btn:#33373E;--text:#F3F4F1;--text2:#A3A7AE;--text3:#8A8F97;--accent:#C8F04A;--on-accent:#121314;--orange:#FF9F4A;--danger:#FF8A7A}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","Hiragino Sans GB","Noto Sans SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:100%}
+body{min-height:100vh;overscroll-behavior-y:none}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer;border:none;background:none;padding:0;touch-action:manipulation}
+button:disabled{cursor:default}
+input{-webkit-appearance:none;appearance:none}
+input::placeholder{color:var(--text3)}
+.num{font-variant-numeric:tabular-nums;font-feature-settings:"tnum"}
+.screen{max-width:520px;margin:0 auto;padding:calc(env(safe-area-inset-top) + 24px) 20px calc(env(safe-area-inset-bottom) + 32px)}
+.screen.tabs{padding-bottom:calc(env(safe-area-inset-bottom) + 110px)}
+h1{margin:0;font-size:30px;line-height:1.3;font-weight:700}
+h2{margin:0;font-size:17px;font-weight:700}
+.date{margin:0;font-size:14px;color:var(--text2)}
+.sub{margin:8px 0 0;font-size:15px;line-height:1.6;color:var(--text2)}
+.muted{font-size:13px;color:var(--text3)}
+.card{background:var(--card);border-radius:20px;padding:16px}
+.mt8{margin-top:8px}.mt12{margin-top:12px}.mt16{margin-top:16px}.mt20{margin-top:20px}.mt24{margin-top:24px}
+.sec{display:flex;align-items:baseline;gap:8px;margin:28px 0 12px}
+.sec .grow{flex:1}
+.grow{flex:1;min-width:0}
+.row-flex{display:flex;align-items:center;gap:12px}
+.btn-primary{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;height:56px;border-radius:16px;background:var(--accent);color:var(--on-accent);font-size:17px;font-weight:700}
+.btn-primary:disabled{opacity:.35}
+.btn-outline{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;height:48px;border-radius:14px;border:1.5px solid var(--accent);color:var(--accent);font-size:16px;font-weight:700}
+.btn-ghost{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;height:52px;border-radius:16px;border:1.5px dashed #3A3F46;color:var(--text2);font-size:15px}
+.btn-quiet{display:flex;align-items:center;justify-content:center;width:100%;height:48px;border-radius:14px;background:var(--inner);font-size:16px;font-weight:500}
+.btn-danger{display:flex;align-items:center;justify-content:center;width:100%;height:48px;border-radius:14px;background:#3A2422;color:var(--danger);font-size:16px;font-weight:700}
+.link{color:var(--accent);font-size:14px;font-weight:500;white-space:nowrap}
+.icon-btn{width:40px;height:40px;border-radius:20px;background:var(--card);display:flex;align-items:center;justify-content:center;flex:none}
+.hit{width:44px;height:44px;display:flex;align-items:center;justify-content:center;flex:none}
+.progress{display:flex;gap:6px}.progress i{flex:1;height:4px;border-radius:2px;background:var(--line)}.progress i.on{background:var(--accent)}
+.chips{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.chip{height:44px;border-radius:12px;border:1px solid var(--line);background:var(--card);font-size:15px;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 4px}
+.chip.on{background:var(--accent);border-color:var(--accent);color:var(--on-accent);font-weight:700}
+.tag{font-size:12px;color:var(--text2);background:var(--inner);border-radius:6px;padding:2px 8px;white-space:nowrap}
+.tag.strong{font-size:13px;font-weight:700;color:var(--text);background:var(--line)}
+.list{background:var(--card);border-radius:20px;padding:4px 8px 4px 16px}
+.row{display:flex;align-items:center;gap:12px;min-height:56px;border-top:1px solid var(--inner);width:100%;text-align:left;color:var(--text)}
+.row:first-child{border-top:none}
+.list.alt{background:var(--inner)}.list.alt .row{border-top-color:#33373E}
+.row .t{font-size:16px}.row .s{font-size:13px;color:var(--text3);margin-top:2px}
+.group{background:var(--card);border-radius:20px;padding:14px 6px 4px 16px}
+.group-h{display:flex;align-items:center;gap:8px;padding-bottom:10px}
+.group .row{min-height:60px}
+.check{width:26px;height:26px;border-radius:8px;background:var(--accent);display:flex;align-items:center;justify-content:center}
+.check.off{background:transparent;border:1.5px solid #4A4F57}
+.check.off svg{visibility:hidden}
+.partcard{position:relative;height:112px;padding:16px;border-radius:20px;border:2px solid var(--line);background:var(--card);display:flex;flex-direction:column;justify-content:flex-end;align-items:flex-start;gap:2px;text-align:left;color:var(--text)}
+.partcard.on{border-color:var(--accent)}
+.partcard .big{font-size:26px;font-weight:700}
+.partcard .en{font-size:12px;font-weight:600;letter-spacing:.08em;color:var(--text3)}
+.partcard .tick{position:absolute;top:14px;right:14px;width:24px;height:24px;border-radius:12px;background:var(--accent);display:flex;align-items:center;justify-content:center}
+.partcard:not(.on) .tick{background:transparent;border:2px solid #4A4F57}
+.partcard:not(.on) .tick svg{visibility:hidden}
+.partcard.add{border-style:dashed;border-color:#3A3F46;background:transparent;justify-content:center;align-items:center;gap:6px;color:var(--text2)}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.tabs5{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
+.ptab{height:56px;border-radius:14px;border:1px solid var(--line);background:var(--card);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;color:var(--text);overflow:hidden}
+.ptab b{font-size:15px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 4px}
+.ptab span{font-size:11px;color:var(--text3)}
+.ptab.on{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.ptab.on span{color:var(--on-accent)}
+.field{display:flex;gap:8px}
+.input{flex:1;min-width:0;height:52px;padding:0 16px;border-radius:14px;border:1px solid var(--line);background:var(--card);color:var(--text);font-size:16px;outline:none}
+.input:focus{border-color:var(--accent)}
+.add-btn{width:76px;height:52px;border-radius:14px;border:1.5px solid var(--accent);color:var(--accent);font-size:16px;font-weight:700;flex:none}
+.sugs{display:flex;flex-wrap:wrap;gap:8px}
+.sug{height:36px;padding:0 14px;border-radius:18px;border:1px dashed #3A3F46;color:var(--text2);font-size:14px}
+.stepper{display:flex;align-items:center;gap:4px;background:var(--inner);border-radius:14px;padding:4px;flex:none}
+.stepper button{width:40px;height:40px;border-radius:10px;background:var(--btn);display:flex;align-items:center;justify-content:center}
+.stepper .val{min-width:40px;text-align:center;font-size:22px;font-weight:700}
+.stepper.sm button{width:36px;height:36px;border-radius:9px}
+.stepper.sm .val{min-width:34px;font-size:18px}
+.tabbar{position:fixed;left:0;right:0;bottom:0;z-index:20;background:rgba(21,23,26,.94);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border-top:1px solid var(--inner);padding:8px 24px calc(env(safe-area-inset-bottom) + 8px)}
+.tabbar-in{max-width:520px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr)}
+.tab{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11px;color:var(--text3);padding:4px 0;font-weight:500}
+.tab.on{color:var(--accent);font-weight:700}
+/* workout */
+.wk-head{display:flex;align-items:center;gap:12px}
+.timer{display:flex;align-items:center;gap:6px;height:36px;padding:0 12px;border-radius:18px;background:var(--card);font-size:17px;font-weight:600}
+.bar{height:6px;border-radius:3px;background:var(--inner);overflow:hidden}.bar i{display:block;height:100%;border-radius:3px;background:var(--accent)}
+.excard{width:100%;display:flex;align-items:center;gap:14px;padding:14px 8px 14px 16px;text-align:left;color:var(--text)}
+.status{width:28px;height:28px;border-radius:14px;flex:none;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700}
+.status.done{background:var(--accent)}
+.status.todo{border:2px solid #3A3F46}
+.status.prog{border:2px solid var(--accent);color:var(--accent)}
+.excard .t{font-size:16px;font-weight:500}.excard .s{font-size:13px;color:var(--text3);margin-top:2px;line-height:1.4}
+.exopen{border:1.5px solid var(--accent)}
+.exopen-h{display:flex;align-items:center;gap:8px}
+.exopen-h h2{font-size:18px}
+.countbox{margin-top:14px;background:var(--inner);border-radius:16px;padding:18px 16px;display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center}
+.countbox .stepper{background:transparent;gap:16px;padding:0}
+.countbox .stepper button{width:48px;height:48px;border-radius:14px;background:var(--btn)}
+.countbox .stepper .val{min-width:56px;font-size:36px;line-height:1}
+.setgrid{display:grid;grid-template-columns:32px minmax(0,1fr) minmax(0,1fr) 44px;gap:8px;align-items:center}
+.sethead{margin-top:18px;font-size:12px;color:var(--text3);text-align:center}
+.setrow{margin-top:8px}
+.setno{justify-self:center;width:28px;height:28px;border-radius:14px;background:var(--inner);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;color:var(--text2)}
+.setno.cur{background:transparent;border:1.5px solid var(--accent);color:var(--accent)}
+.cell{width:100%;height:44px;border-radius:12px;border:1.5px solid transparent;background:var(--inner);color:var(--text);text-align:center;font-size:18px;font-weight:600;outline:none;padding:0 4px}
+.cell:focus{border-color:var(--accent)}
+.setrow.done .cell{color:var(--text2)}
+.donebtn{width:44px;height:44px;display:flex;align-items:center;justify-content:center}
+.donebtn i{width:32px;height:32px;border-radius:10px;border:1.5px solid #3A3F46;display:flex;align-items:center;justify-content:center}
+.donebtn.on i{background:var(--accent);border-color:var(--accent)}
+.exfoot{margin-top:14px;padding-top:12px;border-top:1px solid var(--inner);display:flex;align-items:center;justify-content:space-between;gap:12px}
+.textbtn{height:36px;font-size:14px;font-weight:500;color:var(--accent)}
+.textbtn.dim{color:var(--text3);font-weight:400}
+/* done & weight */
+.stats3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:16px}
+.stat .k{font-size:12px;color:var(--text3)}
+.stat .v{font-size:26px;font-weight:700}
+.stat .u{font-size:13px;color:var(--text2)}
+.week{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;margin-top:14px;text-align:center}
+.week .d{display:flex;flex-direction:column;align-items:center;gap:6px}
+.week .l{font-size:12px;color:var(--text3)}
+.week .l.today{color:var(--text);font-weight:700}
+.dot{width:32px;height:32px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--text3);background:var(--inner)}
+.dot.ok{background:var(--accent)}
+.dot.plan{background:transparent;border:1.5px dashed #4A4F57;color:var(--text2)}
+.dot.today{box-shadow:0 0 0 2px var(--card),0 0 0 4px var(--accent)}
+.wt-row{margin-top:18px;display:flex;align-items:center;justify-content:space-between}
+.wt-btn{width:52px;height:52px;border-radius:16px;background:var(--inner);display:flex;align-items:center;justify-content:center}
+.wt-input{width:136px;border:none;background:transparent;color:var(--text);text-align:right;font-size:56px;font-weight:700;line-height:1.1;padding:0;outline:none}
+.pill{background:var(--inner);border-radius:6px;padding:2px 8px;color:var(--text);font-size:13px}
+.ok-text{font-size:13px;font-weight:600;color:var(--accent)}
+/* stats */
+.seg{display:grid;gap:4px;background:var(--card);border-radius:12px;padding:4px}
+.seg button{height:36px;border-radius:9px;color:var(--text2);font-size:14px}
+.seg button.on{background:#2E3238;color:var(--text);font-weight:700}
+.tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.tile{background:var(--card);border-radius:16px;padding:14px 16px}
+.tile .k{font-size:12px;color:var(--text3)}
+.tile .v{font-size:28px;font-weight:700;margin-top:4px}
+.tile .u{font-size:13px;color:var(--text2)}
+.chart{display:block;width:100%;height:auto;margin-top:12px;touch-action:pan-y}
+.hbar{display:grid;grid-template-columns:44px minmax(0,1fr) 64px;align-items:center;gap:10px;height:32px}
+.hbar .n{font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hbar .b{height:14px;background:var(--accent);border-radius:0 4px 4px 0;min-width:4px}
+.hbar .v{text-align:right;font-size:14px;font-weight:600}
+.selwrap{position:relative}
+.selwrap select{-webkit-appearance:none;appearance:none;height:34px;padding:0 30px 0 12px;border-radius:10px;border:1px solid var(--line);background:var(--inner);color:var(--text);font-size:14px;max-width:180px}
+.selwrap svg{position:absolute;right:10px;top:10px;pointer-events:none}
+table.tbl{width:100%;border-collapse:collapse;font-size:14px;margin-top:8px}
+.tbl th{font-size:12px;color:var(--text3);font-weight:500;padding:8px 0;text-align:left}
+.tbl td{padding:12px 0;border-top:1px solid var(--inner)}
+.tbl .r{text-align:right}
+.tbl tr.click{cursor:pointer}
+.empty{padding:28px 8px;text-align:center;font-size:14px;color:var(--text3);line-height:1.6}
+/* account */
+.avatar{width:56px;height:56px;border-radius:28px;background:var(--accent);color:var(--on-accent);display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:700;flex:none}
+.day{width:40px;font-size:15px;font-weight:700;flex:none}
+.mini{font-size:13px;background:var(--line);border-radius:8px;padding:3px 10px;white-space:nowrap}
+.badge{font-size:11px;font-weight:700;color:var(--on-accent);background:var(--accent);border-radius:6px;padding:1px 6px;white-space:nowrap}
+.switch{width:50px;height:30px;border-radius:15px;background:#3A3F46;padding:3px;display:flex;justify-content:flex-start;align-items:center;flex:none;transition:background .15s}
+.switch i{width:24px;height:24px;border-radius:12px;background:var(--text2)}
+.switch.on{background:var(--accent);justify-content:flex-end}
+.switch.on i{background:var(--on-accent)}
+.hint{display:flex;gap:10px;align-items:flex-start;background:var(--card);border-radius:16px;padding:14px 16px}
+.hint p{margin:0;font-size:14px;line-height:1.6;color:var(--text2)}
+/* modal & toast */
+.overlay{position:fixed;inset:0;z-index:50;background:rgba(0,0,0,.6);display:flex;align-items:flex-end;justify-content:center;animation:fade .15s ease-out}
+.sheet{width:100%;max-width:520px;background:#1C1E22;border-radius:24px 24px 0 0;padding:20px 20px calc(env(safe-area-inset-bottom) + 20px);max-height:86vh;overflow:auto;animation:up .2s ease-out}
+.sheet h3{margin:0;font-size:19px;font-weight:700}
+.sheet p{margin:8px 0 0;font-size:15px;line-height:1.6;color:var(--text2)}
+.sheet .btns{display:flex;flex-direction:column;gap:10px;margin-top:20px}
+@keyframes fade{from{opacity:0}}
+@keyframes up{from{transform:translateY(40px);opacity:.5}}
+#toast{position:fixed;left:50%;top:calc(env(safe-area-inset-top) + 12px);transform:translateX(-50%) translateY(-20px);z-index:60;background:#2E3238;color:var(--text);font-size:14px;padding:10px 16px;border-radius:12px;opacity:0;pointer-events:none;transition:all .2s;box-shadow:0 6px 24px rgba(0,0,0,.4);max-width:86vw;text-align:center}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div id="modal"></div>
+<div id="toast" role="status" aria-live="polite"></div>
+<script>
+'use strict';
+/* ========== 常量 ========== */
+const KEY = 'fitlog.v1';
+const APP_VERSION = '1.0.0';
+const DEFAULT_PARTS = [
+  { id: 'chest', name: '胸', en: 'CHEST' },
+  { id: 'back', name: '背', en: 'BACK' },
+  { id: 'arms', name: '手臂', en: 'ARMS' },
+  { id: 'shoulders', name: '肩', en: 'SHOULDERS' },
+  { id: 'legs', name: '腿', en: 'LEGS' }
+];
+const SUGGEST = {
+  chest: ['杠铃卧推', '上斜哑铃卧推', '哑铃卧推', '器械推胸', '绳索夹胸', '哑铃飞鸟', '双杠臂屈伸', '俯卧撑'],
+  back: ['引体向上', '高位下拉', '杠铃划船', '坐姿划船', '单臂哑铃划船', '硬拉', '直臂下压'],
+  arms: ['杠铃弯举', '哑铃弯举', '锤式弯举', '绳索下压', '窄距卧推', '过头臂屈伸'],
+  shoulders: ['哑铃推举', '杠铃推举', '侧平举', '前平举', '面拉', '反向飞鸟'],
+  legs: ['深蹲', '腿举', '罗马尼亚硬拉', '腿屈伸', '腿弯举', '箭步蹲', '提踵']
+};
+const WD = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
+const WD_SHORT = ['日', '一', '二', '三', '四', '五', '六'];
+const WEEK_ORDER = [1, 2, 3, 4, 5, 6, 0];
+
+/* ========== 图标 ========== */
+const ic = (d, o = {}) => `<svg width="${o.s || 20}" height="${o.s || 20}" viewBox="0 0 24 24" fill="none" stroke="${o.c || 'currentColor'}" stroke-width="${o.w || 2}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg>`;
+const I = {
+  check: (c = '#121314', s = 14) => ic('<path d="M5 12.5l4.5 4.5L19 7.5"/>', { c, s, w: 3 }),
+  plus: (c = 'currentColor', s = 18) => ic('<path d="M12 5v14M5 12h14"/>', { c, s, w: 2.5 }),
+  minus: (c = 'currentColor', s = 18) => ic('<path d="M5 12h14"/>', { c, s, w: 2.5 }),
+  x: (c = 'currentColor', s = 18) => ic('<path d="M6 6l12 12M18 6L6 18"/>', { c, s }),
+  back: (c = 'currentColor', s = 20) => ic('<path d="M15 5l-7 7 7 7"/>', { c, s }),
+  right: (c = '#8A8F97', s = 18) => ic('<path d="M9 6l6 6-6 6"/>', { c, s }),
+  down: (c = '#8A8F97', s = 18) => ic('<path d="M6 9l6 6 6-6"/>', { c, s }),
+  up: (c = '#8A8F97', s = 18) => ic('<path d="M6 15l6-6 6 6"/>', { c, s }),
+  arrow: (c = '#121314', s = 18) => ic('<path d="M5 12h14M13 6l6 6-6 6"/>', { c, s, w: 2.5 }),
+  cal: (c = '#C8F04A', s = 22) => ic('<rect x="4" y="5" width="16" height="15" rx="3"/><path d="M4 10h16M9 3v4M15 3v4"/>', { c, s }),
+  clock: (c = '#C8F04A', s = 16) => ic('<circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M10 2h4"/>', { c, s }),
+  play: () => '<svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10-6.5z" fill="#121314"/></svg>',
+  info: (c = '#C8F04A') => ic('<circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 7.5v.5"/>', { c, s: 18 }),
+  dumbbell: (c) => ic('<path d="M6 7v10M18 7v10M3 10v4M21 10v4M6 12h12"/>', { c, s: 24 }),
+  chart: (c) => ic('<path d="M5 20v-8M12 20V5M19 20v-5"/>', { c, s: 24 }),
+  user: (c) => ic('<circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/>', { c, s: 24 }),
+  trash: (c = '#8A8F97', s = 18) => ic('<path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/>', { c, s })
+};
+
+/* ========== 工具 ========== */
+const $ = (s) => document.querySelector(s);
+const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const uid = () => Math.random().toString(36).slice(2, 9) + Date.now().toString(36).slice(-4);
+const pad = (n) => String(n).padStart(2, '0');
+const dstr = (d) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+const todayStr = () => dstr(new Date());
+const parseD = (s) => { const [y, m, d] = s.split('-').map(Number); return new Date(y, m - 1, d); };
+const addDays = (d, n) => { const x = new Date(d); x.setDate(x.getDate() + n); return x; };
+const fmtMD = (s) => { const d = parseD(s); return `${d.getMonth() + 1}/${d.getDate()}`; };
+const fmtCN = (s) => { const d = parseD(s); return `${d.getMonth() + 1}月${d.getDate()}日`; };
+const trimNum = (n) => String(Math.round(n * 100) / 100);
+const fmtInt = (n) => Math.round(n).toLocaleString('en-US');
+const parseNum = (v) => { if (v == null) return null; const s = String(v).trim().replace(',', '.'); if (s === '') return null; const n = Number(s); return isFinite(n) ? n : null; };
+const fmtW = (w) => (w === 0 ? '自重' : `${trimNum(w)} kg`);
+const fmtDur = (ms) => { const t = Math.max(0, Math.floor(ms / 1000)); const h = Math.floor(t / 3600), m = Math.floor((t % 3600) / 60), s = t % 60; return h ? `${h}:${pad(m)}:${pad(s)}` : `${pad(m)}:${pad(s)}`; };
+const volOf = (sets) => sets.reduce((a, s) => a + (Number(s.w) || 0) * (Number(s.r) || 0), 0);
+const fmtVol = (kg) => (kg >= 10000 ? { v: (kg / 1000).toFixed(1), u: '吨' } : { v: fmtInt(kg), u: 'kg' });
+
+/* ========== 数据 ========== */
+function fresh() {
+  const plan = {};
+  for (let i = 0; i < 7; i++) plan[i] = { parts: [], off: [] };
+  return { v: 1, setupDone: false, name: '', parts: DEFAULT_PARTS.map((p) => ({ ...p, archived: false })), exercises: [], plan, defaultSets: 4, sessions: [], weights: {}, active: null };
+}
+function normalize(o) {
+  const f = fresh();
+  const s = Object.assign(f, o || {});
+  if (!Array.isArray(s.parts) || !s.parts.length) s.parts = f.parts;
+  if (!Array.isArray(s.exercises)) s.exercises = [];
+  if (!Array.isArray(s.sessions)) s.sessions = [];
+  if (!s.weights || typeof s.weights !== 'object') s.weights = {};
+  const plan = {};
+  for (let i = 0; i < 7; i++) { const p = (s.plan && s.plan[i]) || {}; plan[i] = { parts: Array.isArray(p.parts) ? p.parts : [], off: Array.isArray(p.off) ? p.off : [] }; }
+  s.plan = plan;
+  if (!(s.defaultSets >= 1)) s.defaultSets = 4;
+  return s;
+}
+function load() {
+  try { const raw = localStorage.getItem(KEY); if (raw) return normalize(JSON.parse(raw)); } catch (e) { console.error(e); }
+  return fresh();
+}
+let S = load();
+function save() {
+  try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) { toast('保存失败：存储空间不足'); }
+}
+
+const U = { tab: 'train', stack: [], setupStep: 1, setupPart: null, todayDate: null, todayParts: [], todayOff: [], todayExtra: [], again: false, expanded: null, weightDraft: null, weightDate: null, statsRange: 30, statsEx: null, modal: null };
+
+const activeParts = () => S.parts.filter((p) => !p.archived);
+const partById = (id) => S.parts.find((p) => p.id === id);
+const partName = (id) => (partById(id) || {}).name || '已删除';
+const exById = (id) => S.exercises.find((e) => e.id === id);
+const exOf = (pid) => S.exercises.filter((e) => e.partId === pid && !e.archived);
+const orderParts = (ids) => activeParts().map((p) => p.id).filter((id) => ids.includes(id));
+const todaySessions = () => S.sessions.filter((s) => s.date === todayStr());
+const sortedSessions = () => S.sessions.slice().sort((a, b) => a.start - b.start);
+
+function lastItem(exId) {
+  const ss = sortedSessions();
+  for (let i = ss.length - 1; i >= 0; i--) {
+    const it = ss[i].items.find((x) => x.exId === exId && x.sets.length);
+    if (it) return it;
+  }
+  return null;
+}
+function topSet(sets) {
+  return sets.reduce((b, s) => (!b || s.w > b.w || (s.w === b.w && s.r > b.r) ? s : b), null);
+}
+function lastText(exId) {
+  const it = lastItem(exId);
+  if (!it) return '还没有记录';
+  const t = topSet(it.sets);
+  return `上次 ${fmtW(t.w)} × ${t.r} · ${it.sets.length} 组`;
+}
+function lastShort(exId) {
+  const it = lastItem(exId);
+  if (!it) return '';
+  const t = topSet(it.sets);
+  return `上次 ${fmtW(t.w)} × ${t.r}`;
+}
+function suggestedCount(exId) {
+  const it = lastItem(exId);
+  return it ? it.sets.length : S.defaultSets;
+}
+function weightEntries() {
+  return Object.keys(S.weights).sort().map((d) => ({ d, v: S.weights[d] }));
+}
+
+/* ========== 提示 & 弹窗 ========== */
+let toastTimer;
+function toast(msg) {
+  const t = $('#toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 1900);
+}
+function openModal(m) { U.modal = m; renderModal(); }
+function closeModal() { U.modal = null; renderModal(); }
+function confirmBox(title, text, okText, onOk, danger) {
+  openModal({ type: 'confirm', title, text, okText, onOk, danger });
+}
+function promptBox(title, placeholder, value, onOk) {
+  openModal({ type: 'prompt', title, placeholder, value: value || '', onOk });
+  setTimeout(() => { const el = $('#promptInput'); if (el) el.focus(); }, 60);
+}
+function renderModal() {
+  const m = U.modal;
+  const root = $('#modal');
+  if (!m) { root.innerHTML = ''; return; }
+  let body = '';
+  if (m.type === 'confirm') {
+    body = `<h3>${esc(m.title)}</h3>${m.text ? `<p>${esc(m.text)}</p>` : ''}
+      <div class="btns"><button class="${m.danger ? 'btn-danger' : 'btn-primary'}" data-a="m-ok">${esc(m.okText || '确定')}</button>
+      <button class="btn-quiet" data-a="m-close">取消</button></div>`;
+  } else if (m.type === 'prompt') {
+    body = `<h3>${esc(m.title)}</h3>
+      <div class="mt16"><label class="sr" for="promptInput">${esc(m.title)}</label><input id="promptInput" class="input" style="width:100%" placeholder="${esc(m.placeholder)}" value="${esc(m.value)}" data-enter="m-ok" maxlength="20"></div>
+      <div class="btns"><button class="btn-primary" data-a="m-ok">确定</button><button class="btn-quiet" data-a="m-close">取消</button></div>`;
+  } else if (m.type === 'choice') {
+    body = `<h3>${esc(m.title)}</h3>${m.text ? `<p>${esc(m.text)}</p>` : ''}<div class="btns">${m.options.map((o, i) => `<button class="${o.cls || 'btn-quiet'}" data-a="m-choice" data-i="${i}">${esc(o.label)}</button>`).join('')}</div>`;
+  } else if (m.type === 'pick') {
+    body = vPickSheet(m);
+  } else if (m.type === 'session') {
+    body = vSessionSheet(m.id);
+  }
+  root.innerHTML = `<div class="overlay" data-a="m-bg"><div class="sheet" role="dialog" aria-modal="true">${body}</div></div>`;
+}
+
+/* ========== 首次设置 ========== */
+function vSetup1() {
+  const parts = S.parts;
+  const n = parts.filter((p) => !p.archived).length;
+  return `<div class="screen" style="min-height:100vh;display:flex;flex-direction:column">
+    <div class="progress"><i class="on"></i><i></i></div>
+    <p class="muted" style="margin:16px 0 0;color:var(--text2)">第 1 步 / 共 2 步</p>
+    <h1 style="font-size:28px;margin-top:8px">你通常练哪些部位？</h1>
+    <p class="sub">先选好分类，下一步再为每个部位添加具体动作。</p>
+    <div class="grid2" style="margin-top:28px">
+      ${parts.map((p) => `<button class="partcard ${p.archived ? '' : 'on'}" data-a="setup-toggle" data-id="${p.id}" aria-pressed="${!p.archived}">
+        <span class="tick">${I.check()}</span><span class="big">${esc(p.name)}</span><span class="en">${esc(p.en || 'CUSTOM')}</span></button>`).join('')}
+      <button class="partcard add" data-a="add-part">${I.plus('#A3A7AE', 24)}<span style="font-size:15px">自定义部位</span></button>
+    </div>
+    <div style="margin-top:auto;padding-top:28px;display:flex;flex-direction:column;gap:12px">
+      <p class="muted" style="margin:0;text-align:center">已选 ${n} 个部位 · 之后可在「账户」里修改</p>
+      <button class="btn-primary" data-a="setup-next" ${n ? '' : 'disabled'}>下一步：添加动作${I.arrow()}</button>
+    </div>
+  </div>`;
+}
+function exEditor(pid) {
+  const p = partById(pid);
+  const list = exOf(pid);
+  const names = new Set(list.map((e) => e.name));
+  const sugs = (SUGGEST[pid] || []).filter((n) => !names.has(n));
+  return `<label class="muted" for="newEx" style="display:block;margin-top:22px;color:var(--text2)">添加「${esc(p.name)}」的动作</label>
+    <div class="field mt8"><input id="newEx" class="input" placeholder="例如：${esc((SUGGEST[pid] || ['动作名称'])[0])}" data-enter="add-ex" data-part="${pid}" maxlength="20" autocomplete="off">
+    <button class="add-btn" data-a="add-ex" data-part="${pid}">添加</button></div>
+    ${list.length ? `<div class="list mt16">${list.map((e) => `<div class="row"><span class="grow t">${esc(e.name)}</span>
+      <button class="hit" data-a="del-ex" data-id="${e.id}" aria-label="删除 ${esc(e.name)}">${I.x('#8A8F97')}</button></div>`).join('')}</div>`
+      : `<div class="card mt16 empty" style="padding:22px 8px">还没有动作，输入名称或点下面的推荐</div>`}
+    ${sugs.length ? `<p class="muted" style="margin:20px 0 10px;color:var(--text2)">常用推荐 · 点一下即可添加</p>
+      <div class="sugs">${sugs.map((n) => `<button class="sug" data-a="add-sug" data-part="${pid}" data-name="${esc(n)}">+ ${esc(n)}</button>`).join('')}</div>` : ''}`;
+}
+function vSetup2() {
+  const parts = activeParts();
+  if (!U.setupPart || !parts.some((p) => p.id === U.setupPart)) U.setupPart = parts[0].id;
+  const total = parts.reduce((a, p) => a + exOf(p.id).length, 0);
+  return `<div class="screen" style="min-height:100vh;display:flex;flex-direction:column">
+    <div class="row-flex"><button class="icon-btn" data-a="setup-back" aria-label="返回上一步">${I.back('#F3F4F1')}</button>
+      <div class="progress grow"><i class="on"></i><i class="on"></i></div></div>
+    <p class="muted" style="margin:16px 0 0;color:var(--text2)">第 2 步 / 共 2 步</p>
+    <h1 style="font-size:28px;margin-top:8px">每个部位练什么？</h1>
+    <p class="sub">选一个部位，添加你常做的动作。</p>
+    <div class="tabs5" role="tablist" style="margin-top:20px">${parts.map((p) => `<button class="ptab ${p.id === U.setupPart ? 'on' : ''}" role="tab" aria-selected="${p.id === U.setupPart}" data-a="setup-part" data-id="${p.id}"><b>${esc(p.name)}</b><span>${exOf(p.id).length} 个</span></button>`).join('')}</div>
+    ${exEditor(U.setupPart)}
+    <div style="margin-top:auto;padding-top:28px;display:flex;flex-direction:column;gap:12px">
+      <p class="muted" style="margin:0;text-align:center">${parts.length} 个部位共 ${total} 个动作</p>
+      <button class="btn-primary" data-a="setup-done" ${total ? '' : 'disabled'}>完成设置</button>
+    </div>
+  </div>`;
+}
+function addExercise(pid, name) {
+  name = (name || '').trim();
+  if (!name) { toast('请输入动作名称'); return false; }
+  if (exOf(pid).some((e) => e.name === name)) { toast('这个动作已经有了'); return false; }
+  const old = S.exercises.find((e) => e.partId === pid && e.name === name && e.archived);
+  if (old) old.archived = false; else S.exercises.push({ id: uid(), partId: pid, name, archived: false });
+  save();
+  return true;
+}
+
+/* ========== 今天练什么 ========== */
+function ensureToday() {
+  const t = todayStr();
+  if (U.todayDate === t) return;
+  const plan = S.plan[new Date().getDay()];
+  U.todayDate = t;
+  U.todayParts = orderParts(plan.parts);
+  U.todayOff = [];
+  U.todayExtra = [];
+}
+function todayAll() {
+  const plan = S.plan[new Date().getDay()];
+  const shown = [], hidden = [];
+  for (const pid of orderParts(U.todayParts)) {
+    for (const ex of exOf(pid)) {
+      const planned = plan.parts.includes(pid) ? !plan.off.includes(ex.id) : true;
+      (planned || U.todayExtra.includes(ex.id) ? shown : hidden).push(ex);
+    }
+  }
+  return { shown, hidden };
+}
+function vToday() {
+  ensureToday();
+  const wd = new Date().getDay();
+  const plan = S.plan[wd];
+  const hasPlan = Object.values(S.plan).some((p) => p.parts.length);
+  const isRest = hasPlan && !plan.parts.length;
+  let planCard;
+  if (!hasPlan) {
+    planCard = planBox('还没有每周计划', '设置后每天会自动选好部位', '去设置');
+  } else if (isRest) {
+    planCard = planBox(`按每周计划，${WD[wd]}是`, '休息日', '修改');
+  } else {
+    planCard = planBox(`按每周计划，${WD[wd]}练`, plan.parts.filter((id) => partById(id) && !partById(id).archived).map(partName).join(' + '), '修改');
+  }
+  const { shown, hidden } = todayAll();
+  const checked = shown.filter((e) => !U.todayOff.includes(e.id));
+  const totalSets = checked.reduce((a, e) => a + suggestedCount(e.id), 0);
+  let groups = '';
+  for (const pid of orderParts(U.todayParts)) {
+    const exs = shown.filter((e) => e.partId === pid);
+    const on = exs.filter((e) => !U.todayOff.includes(e.id)).length;
+    groups += `<div class="group mt12"><div class="group-h"><span class="tag strong">${esc(partName(pid))}</span><span class="muted">${exs.length ? `${on} 个动作` : '这个部位还没有动作'}</span></div>
+      ${exs.map((e) => { const off = U.todayOff.includes(e.id); return `<div class="row"><div class="grow"><div class="t" style="font-weight:500;${off ? 'color:var(--text3)' : ''}">${esc(e.name)}</div><div class="s">${esc(lastText(e.id))}</div></div>
+        <button class="hit" role="checkbox" aria-checked="${!off}" aria-label="今天练 ${esc(e.name)}" data-a="today-ex" data-id="${e.id}"><span class="check ${off ? 'off' : ''}">${I.check()}</span></button></div>`; }).join('')}
+      ${!exs.length ? `<button class="row" data-a="go-part" data-id="${pid}" style="color:var(--accent);font-size:15px">${I.plus('#C8F04A')}去添加动作</button>` : ''}</div>`;
+  }
+  return `<div class="screen tabs">
+    <p class="date">${fmtCN(todayStr())} · ${WD[wd]}</p>
+    <h1 style="margin-top:6px">今天练什么？</h1>
+    ${planCard}
+    <div class="sec"><h2>选择今天的部位</h2><span class="muted">可多选</span></div>
+    <div class="chips">${activeParts().map((p) => `<button class="chip ${U.todayParts.includes(p.id) ? 'on' : ''}" aria-pressed="${U.todayParts.includes(p.id)}" data-a="today-part" data-id="${p.id}">${esc(p.name)}</button>`).join('')}</div>
+    ${U.todayParts.length ? `<div class="sec"><h2>今日动作</h2><span class="muted grow">${checked.length} 个 · 约 ${totalSets} 组</span><button class="link" data-a="today-add">+ 临时加动作</button></div>${groups}
+      <button class="btn-primary mt24" data-a="start" ${checked.length ? '' : 'disabled'}>${I.play()}开始训练</button>`
+      : `<div class="card empty mt16">${isRest ? '今天按计划休息。<br>想练的话，点上面的部位就能开始。' : '点上面的部位，开始今天的训练'}</div>`}
+    ${isRest || !U.todayParts.length ? `<div class="mt24">${weightCard()}</div>` : ''}
+  </div>`;
+}
+function planBox(small, big, linkText) {
+  return `<div class="card mt20 row-flex" style="gap:14px">
+    <div style="width:44px;height:44px;border-radius:22px;background:var(--inner);display:flex;align-items:center;justify-content:center;flex:none">${I.cal()}</div>
+    <div class="grow"><div style="font-size:13px;color:var(--text2)">${esc(small)}</div><div style="font-size:20px;font-weight:700;margin-top:2px">${esc(big)}</div></div>
+    <button class="link" data-a="go-plan" data-day="${new Date().getDay()}">${esc(linkText)}</button></div>`;
+}
+function startWorkout() {
+  const { shown } = todayAll();
+  const exs = shown.filter((e) => !U.todayOff.includes(e.id));
+  if (!exs.length) return;
+  S.active = {
+    id: uid(), date: todayStr(), start: Date.now(), parts: orderParts(U.todayParts),
+    items: exs.map((e) => ({ exId: e.id, name: e.name, partId: e.partId, count: suggestedCount(e.id), confirmed: false, sets: [] }))
+  };
+  U.expanded = exs[0].id;
+  U.again = false;
+  save();
+  render();
+  window.scrollTo(0, 0);
+}
+
+/* ========== 训练记录 ========== */
+const itemOf = (exId) => S.active && S.active.items.find((i) => i.exId === exId);
+const itemDone = (it) => it.confirmed && it.sets.length > 0 && it.sets.every((s) => s.done);
+const doneSets = (it) => it.sets.filter((s) => s.done);
+function placeholderFor(it, i) {
+  const last = lastItem(it.exId);
+  let src = null;
+  if (last && last.sets[i]) src = last.sets[i];
+  else if (i > 0 && (parseNum(it.sets[i - 1].w) != null || parseNum(it.sets[i - 1].r) != null)) src = { w: parseNum(it.sets[i - 1].w), r: parseNum(it.sets[i - 1].r) };
+  else if (last) src = last.sets[last.sets.length - 1];
+  return { w: src && src.w != null ? src.w : null, r: src && src.r != null ? src.r : null };
+}
+function vWorkout() {
+  const A = S.active;
+  const total = A.items.length;
+  const done = A.items.filter(itemDone).length;
+  const pct = total ? Math.round((done / total) * 100) : 0;
+  const parts = orderParts([...new Set(A.items.map((i) => i.partId))]).map(partName).join(' + ') || '训练';
+  return `<div class="screen">
+    <div class="wk-head">
+      <button class="icon-btn" data-a="w-exit" aria-label="结束或放弃训练">${I.x('#F3F4F1')}</button>
+      <div class="grow"><h1 style="font-size:20px;line-height:1.3">今日训练</h1><div class="muted" style="color:var(--text2);margin-top:2px">${esc(parts)} · ${total} 个动作</div></div>
+      <div class="timer">${I.clock()}<span id="timer" class="num">${fmtDur(Date.now() - A.start)}</span></div>
+    </div>
+    <div class="mt20" style="display:flex;justify-content:space-between;font-size:13px;color:var(--text2)"><span>已完成 ${done} / ${total} 个动作</span><span class="num" style="font-weight:600">${pct}%</span></div>
+    <div class="bar mt8" role="progressbar" aria-label="训练进度" aria-valuemin="0" aria-valuemax="${total}" aria-valuenow="${done}"><i style="width:${pct}%"></i></div>
+    ${A.items.map((it) => vItem(it)).join('')}
+    <button class="btn-ghost mt12" data-a="w-add">${I.plus('#A3A7AE')}加一个动作</button>
+    <button class="btn-primary mt24" data-a="w-finish">完成今日训练</button>
+    <p class="muted" style="text-align:center;margin:10px 0 0">完成后，首页会切换为记录今日体重</p>
+  </div>`;
+}
+function vItem(it) {
+  const ex = exById(it.exId);
+  const name = ex ? ex.name : it.name;
+  const part = partName(it.partId);
+  const isDone = itemDone(it);
+  const ds = doneSets(it);
+  if (U.expanded !== it.exId) {
+    let st, sub;
+    if (isDone) {
+      st = `<span class="status done">${I.check()}</span>`;
+      sub = `${part} · ${it.sets.length} 组 · ${it.sets.map((s) => (Number(s.w) ? `${trimNum(Number(s.w))}×${s.r}` : `${s.r}次`)).join(' / ')}`;
+    } else if (ds.length) {
+      st = `<span class="status prog num">${ds.length}/${it.sets.length}</span>`;
+      sub = `${part} · 进行中 · 已做 ${ds.length} / ${it.sets.length} 组`;
+    } else {
+      st = `<span class="status todo"></span>`;
+      sub = `${part} · 未开始 · ${lastShort(it.exId) || '第一次练'}`;
+    }
+    return `<button class="card excard mt12" data-a="w-expand" data-ex="${it.exId}" aria-expanded="false">${st}
+      <div class="grow"><div class="t">${esc(name)}</div><div class="s">${esc(sub)}</div></div><span class="hit">${I.down()}</span></button>`;
+  }
+  const head = `<div class="exopen-h"><h2>${esc(name)}</h2><span class="tag">${esc(part)}</span>
+      <span class="muted grow" style="text-align:right">${esc(lastShort(it.exId))}</span>
+      <button class="hit" style="width:32px;margin-right:-6px" data-a="w-collapse" aria-label="收起">${I.up()}</button></div>`;
+  if (!it.confirmed) {
+    return `<section class="card exopen mt12" data-card="${it.exId}">${head}
+      <div class="countbox">
+        <div><div style="font-size:16px;font-weight:700">这次做几组？</div><div class="muted" style="color:var(--text2);margin-top:4px;line-height:1.5">确定后会生成对应的组，逐组填写重量和次数</div></div>
+        <div class="stepper"><button data-a="cnt" data-ex="${it.exId}" data-d="-1" aria-label="减少组数">${I.minus('#F3F4F1')}</button><span class="val num">${it.count}</span><button data-a="cnt" data-ex="${it.exId}" data-d="1" aria-label="增加组数">${I.plus('#F3F4F1')}</button></div>
+        <button class="btn-outline" data-a="cnt-ok" data-ex="${it.exId}">开始记录 ${it.count} 组</button>
+      </div>
+      <div style="margin-top:10px;text-align:right"><button class="textbtn dim" data-a="w-remove" data-ex="${it.exId}">今天不练这个</button></div>
+    </section>`;
+  }
+  const cur = it.sets.findIndex((s) => !s.done);
+  const rows = it.sets.map((s, i) => {
+    const ph = placeholderFor(it, i);
+    return `<div class="setgrid setrow ${s.done ? 'done' : ''}">
+      <span class="setno num ${i === cur ? 'cur' : ''}">${i + 1}</span>
+      <input class="cell num" type="text" inputmode="decimal" enterkeyhint="next" autocomplete="off" data-in="set" data-ex="${it.exId}" data-i="${i}" data-k="w" value="${esc(s.w)}" placeholder="${ph.w != null ? trimNum(ph.w) : '—'}" aria-label="第 ${i + 1} 组 重量（kg）">
+      <input class="cell num" type="text" inputmode="numeric" enterkeyhint="done" autocomplete="off" data-in="set" data-ex="${it.exId}" data-i="${i}" data-k="r" value="${esc(s.r)}" placeholder="${ph.r != null ? ph.r : '—'}" aria-label="第 ${i + 1} 组 次数">
+      <button class="donebtn ${s.done ? 'on' : ''}" data-a="set-done" data-ex="${it.exId}" data-i="${i}" aria-pressed="${s.done}" aria-label="第 ${i + 1} 组${s.done ? ' 已完成' : ' 标记完成'}"><i>${I.check(s.done ? '#121314' : '#8A8F97', 16)}</i></button>
+    </div>`;
+  }).join('');
+  return `<section class="card exopen mt12" data-card="${it.exId}">${head}
+    <div class="row-flex" style="margin-top:16px;justify-content:space-between">
+      <div><div style="font-size:15px;font-weight:500">组数</div><div style="font-size:12px;color:var(--text3);margin-top:2px">空着的格子按灰色提示值记录</div></div>
+      <div class="stepper"><button data-a="sets" data-ex="${it.exId}" data-d="-1" aria-label="减少一组">${I.minus('#F3F4F1', 16)}</button><span class="val num">${it.sets.length}</span><button data-a="sets" data-ex="${it.exId}" data-d="1" aria-label="增加一组">${I.plus('#F3F4F1', 16)}</button></div>
+    </div>
+    <div class="setgrid sethead"><span>组</span><span>重量 (kg)</span><span>次数</span><span>完成</span></div>
+    ${rows}
+    <div class="exfoot"><span class="muted">已完成容量 <b class="num" style="font-size:15px;color:var(--text)">${fmtInt(volOf(ds))}</b> kg</span>
+      <span class="row-flex" style="gap:16px"><button class="textbtn dim" data-a="w-remove" data-ex="${it.exId}">移除</button><button class="textbtn" data-a="sets" data-ex="${it.exId}" data-d="1">+ 加一组</button></span></div>
+  </section>`;
+}
+function nextPending(afterId) {
+  const items = S.active.items;
+  const idx = items.findIndex((i) => i.exId === afterId);
+  const order = items.slice(idx + 1).concat(items.slice(0, idx));
+  const n = order.find((i) => !itemDone(i));
+  return n ? n.exId : null;
+}
+function markSet(exId, i) {
+  const it = itemOf(exId);
+  if (!it) return;
+  const s = it.sets[i];
+  if (s.done) { s.done = false; save(); render(); return; }
+  const ph = placeholderFor(it, i);
+  let w = parseNum(s.w), r = parseNum(s.r);
+  if (w == null) w = ph.w != null ? ph.w : 0;
+  if (r == null) r = ph.r;
+  if (r == null || r <= 0) {
+    toast('先填写这一组的次数');
+    const el = document.querySelector(`input[data-ex="${exId}"][data-i="${i}"][data-k="r"]`);
+    if (el) el.focus();
+    return;
+  }
+  if (w < 0) { toast('重量不能是负数'); return; }
+  s.w = trimNum(w); s.r = String(Math.round(r)); s.done = true;
+  if (itemDone(it)) {
+    const ex = exById(exId);
+    toast(`${ex ? ex.name : it.name} 完成`);
+    U.expanded = nextPending(exId);
+  }
+  save();
+  render();
+}
+function finishWorkout() {
+  const A = S.active;
+  const items = A.items.map((it) => {
+    const ex = exById(it.exId);
+    return { exId: it.exId, name: ex ? ex.name : it.name, partId: ex ? ex.partId : it.partId, sets: doneSets(it).map((s) => ({ w: Number(s.w) || 0, r: Number(s.r) || 0 })) };
+  }).filter((it) => it.sets.length);
+  if (items.length) {
+    S.sessions.push({ id: A.id, date: A.date, start: A.start, end: Date.now(), parts: orderParts([...new Set(items.map((i) => i.partId))]), items });
+  }
+  S.active = null;
+  U.expanded = null;
+  U.weightDraft = null;
+  U.todayDate = null;
+  save();
+  closeModal();
+  render();
+  window.scrollTo(0, 0);
+  toast(items.length ? '训练已保存' : '已放弃本次训练');
+}
+
+/* ========== 训练完成 & 体重 ========== */
+function weekStrip() {
+  const now = new Date();
+  const t = todayStr();
+  const mon = addDays(now, -((now.getDay() + 6) % 7));
+  let trained = 0, planned = 0;
+  const cells = WEEK_ORDER.map((wd, k) => {
+    const ds = dstr(addDays(mon, k));
+    const did = S.sessions.some((s) => s.date === ds);
+    const plan = S.plan[wd].parts.filter((id) => partById(id) && !partById(id).archived);
+    if (did) trained++;
+    if (plan.length) planned++;
+    const isToday = ds === t;
+    let cls = 'dot', inner = '';
+    if (did) { cls += ' ok'; inner = I.check(); }
+    else if (!plan.length) { inner = '休'; }
+    else if (ds > t || isToday) { cls += ' plan'; inner = esc(partName(plan[0]).slice(0, 2)); }
+    else { inner = '–'; }
+    if (isToday) cls += ' today';
+    return `<div class="d"><span class="l ${isToday ? 'today' : ''}">${WD_SHORT[wd]}</span><span class="${cls}">${inner}</span></div>`;
+  }).join('');
+  return `<div class="card mt12"><div style="display:flex;align-items:baseline;justify-content:space-between"><span style="font-size:15px;font-weight:700">本周训练</span>
+    <span class="muted" style="color:var(--text2)"><b class="num" style="font-size:16px;color:var(--text)">${trained}</b>${planned ? ` / ${planned} 天` : ' 天'}</span></div>
+    <div class="week">${cells}</div></div>`;
+}
+function prevWeight(before) {
+  const es = weightEntries().filter((e) => e.d < before);
+  return es.length ? es[es.length - 1] : null;
+}
+function weightCard() {
+  const t = todayStr();
+  const saved = S.weights[t];
+  if (U.weightDate !== t) { U.weightDate = t; U.weightDraft = null; }
+  const prev = prevWeight(t);
+  if (U.weightDraft == null) U.weightDraft = saved != null ? trimNum(saved) : prev ? trimNum(prev.v) : '';
+  const cur = parseNum(U.weightDraft);
+  let delta = '';
+  if (prev && cur != null) {
+    const d = Math.round((cur - prev.v) * 10) / 10;
+    delta = `<span class="pill num">${d === 0 ? '持平' : (d < 0 ? '↓ ' : '↑ ') + Math.abs(d).toFixed(1) + ' kg'}</span>`;
+  }
+  const same = saved != null && cur === saved;
+  return `<section class="card" style="border-radius:24px;padding:20px">
+    <div style="display:flex;align-items:baseline;justify-content:space-between"><h2 style="font-size:18px">今日体重</h2>
+      ${saved != null ? `<span class="ok-text">今天已记录</span>` : '<span class="muted">每天记录一次</span>'}</div>
+    <div class="wt-row">
+      <button class="wt-btn" data-a="wt" data-d="-0.1" aria-label="减少 0.1 kg">${I.minus('#F3F4F1', 20)}</button>
+      <div style="display:flex;align-items:baseline;gap:4px"><input id="wtInput" class="wt-input num" type="text" inputmode="decimal" autocomplete="off" data-in="wt" value="${esc(U.weightDraft)}" placeholder="0.0" aria-label="今日体重（kg）"><span style="font-size:18px;color:var(--text2)">kg</span></div>
+      <button class="wt-btn" data-a="wt" data-d="0.1" aria-label="增加 0.1 kg">${I.plus('#F3F4F1', 20)}</button>
+    </div>
+    <div style="margin-top:14px;display:flex;align-items:center;justify-content:center;gap:8px;font-size:13px;color:var(--text2);flex-wrap:wrap">
+      <span>${prev ? `上次 ${trimNum(prev.v)} kg · ${fmtCN(prev.d)}` : '第一次记录体重'}</span>${delta}</div>
+    <button class="${same ? 'btn-quiet' : 'btn-primary'}" style="margin-top:18px;height:52px" data-a="wt-save">${same ? '已保存 ✓' : saved != null ? '更新体重' : '保存体重'}</button>
+  </section>`;
+}
+function vDone() {
+  const ss = todaySessions();
+  const mins = Math.round(ss.reduce((a, s) => a + (s.end - s.start), 0) / 60000);
+  const sets = ss.reduce((a, s) => a + s.items.reduce((b, it) => b + it.sets.length, 0), 0);
+  const vol = ss.reduce((a, s) => a + s.items.reduce((b, it) => b + volOf(it.sets), 0), 0);
+  const parts = orderParts([...new Set(ss.flatMap((s) => s.parts))]).map(partName).join(' + ');
+  const fv = fmtVol(vol);
+  const last = ss[ss.length - 1];
+  return `<div class="screen tabs">
+    <p class="date">${fmtCN(todayStr())} · ${WD[new Date().getDay()]}</p>
+    <h1 style="margin-top:6px">今天的训练完成了</h1>
+    <div class="card mt20">
+      <div class="row-flex" style="gap:10px"><span class="status done">${I.check()}</span><span class="grow" style="font-size:17px;font-weight:700">${esc(parts)}</span>
+        <button class="link" style="color:var(--text2)" data-a="session" data-id="${last.id}">查看明细</button></div>
+      <div class="stats3">
+        <div class="stat"><div class="k">用时</div><span class="v num">${mins}</span><span class="u"> 分钟</span></div>
+        <div class="stat"><div class="k">完成</div><span class="v num">${sets}</span><span class="u"> 组</span></div>
+        <div class="stat"><div class="k">总容量</div><span class="v num">${fv.v}</span><span class="u"> ${fv.u}</span></div>
+      </div>
+    </div>
+    ${weekStrip()}
+    <div class="mt12">${weightCard()}</div>
+    <button class="btn-ghost mt16" data-a="again">${I.plus('#A3A7AE')}再练一次</button>
+  </div>`;
+}
+function vSessionSheet(id) {
+  const s = S.sessions.find((x) => x.id === id);
+  if (!s) return '<h3>记录不存在</h3>';
+  const mins = Math.round((s.end - s.start) / 60000);
+  const vol = s.items.reduce((a, it) => a + volOf(it.sets), 0);
+  return `<h3>${fmtCN(s.date)} · ${esc(s.parts.map(partName).join(' + '))}</h3>
+    <p>${mins} 分钟 · ${s.items.reduce((a, it) => a + it.sets.length, 0)} 组 · 容量 ${fmtInt(vol)} kg</p>
+    ${s.items.map((it) => `<div class="card mt12" style="background:var(--inner)"><div style="font-weight:700">${esc(it.name)} <span class="muted" style="font-weight:400">${esc(partName(it.partId))}</span></div>
+      <div class="mt8" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 12px;font-size:14px;color:var(--text2)">${it.sets.map((x, i) => `<span class="num">第${i + 1}组　<b style="color:var(--text)">${x.w ? trimNum(x.w) + ' kg' : '自重'} × ${x.r}</b></span>`).join('')}</div></div>`).join('')}
+    <div class="btns"><button class="btn-quiet" data-a="m-close">关闭</button><button class="btn-danger" data-a="del-session" data-id="${s.id}">删除这条记录</button></div>`;
+}
+
+/* ========== 选择动作弹窗 ========== */
+function vPickSheet(m) {
+  let parts, exclude;
+  if (m.mode === 'today') { parts = orderParts(U.todayParts); exclude = new Set(todayAll().shown.map((e) => e.id)); }
+  else { parts = activeParts().map((p) => p.id); exclude = new Set(S.active.items.map((i) => i.exId)); }
+  const sections = parts.map((pid) => {
+    const exs = exOf(pid).filter((e) => !exclude.has(e.id));
+    return `<div class="mt16"><div class="row-flex" style="justify-content:space-between"><span class="tag strong">${esc(partName(pid))}</span>
+      <button class="link" data-a="pick-new" data-part="${pid}">+ 新建动作</button></div>
+      ${exs.length ? `<div class="list alt mt8">${exs.map((e) => `<button class="row" data-a="pick-ex" data-id="${e.id}"><span class="grow t">${esc(e.name)}</span>${I.plus('#C8F04A')}</button>`).join('')}</div>` : '<div class="muted mt8">没有其他动作了</div>'}</div>`;
+  }).join('');
+  return `<h3>${m.mode === 'today' ? '临时加动作' : '加一个动作'}</h3><p>${m.mode === 'today' ? '只对今天生效，不会改动每周计划。' : '加到本次训练里。'}</p>${sections}
+    <div class="btns"><button class="btn-quiet" data-a="m-close">完成</button></div>`;
+}
+
+/* ========== 图表 ========== */
+const CH = {};
+function niceTicks(mn, mx) {
+  if (mn === mx) { const d = Math.max(1, Math.abs(mn) * 0.05); mn -= d; mx += d; }
+  const raw = (mx - mn) / 3;
+  const mag = Math.pow(10, Math.floor(Math.log10(raw)));
+  const n = raw / mag;
+  const step = (n <= 1 ? 1 : n <= 2 ? 2 : n <= 2.5 ? 2.5 : n <= 5 ? 5 : 10) * mag;
+  const lo = Math.floor(mn / step) * step, hi = Math.ceil(mx / step) * step;
+  const t = [];
+  for (let v = lo; v <= hi + step / 2; v += step) t.push(Math.round(v * 1000) / 1000);
+  if (t.length < 2) t.push(Math.round((t[0] + step) * 1000) / 1000);
+  return t;
+}
+function lineChart(id, pts, color, label) {
+  const W = 320, H = 172, L = 36, R = 306, T = 18, B = 136;
+  const ys = pts.map((p) => p.y);
+  let mn = Math.min(...ys), mx = Math.max(...ys);
+  const sp = mx - mn; mn -= sp * 0.08; mx += sp * 0.08;
+  if (mn < 0 && Math.min(...ys) >= 0) mn = 0;
+  const tk = niceTicks(mn, mx);
+  const lo = tk[0], hi = tk[tk.length - 1];
+  const X = (x) => L + x * (R - L);
+  const Y = (y) => B - ((y - lo) / (hi - lo)) * (B - T);
+  const P = pts.map((p) => ({ X: +X(p.x).toFixed(1), Y: +Y(p.y).toFixed(1), tip: p.tip }));
+  CH[id] = P;
+  let s = `<svg class="chart num" viewBox="0 0 ${W} ${H}" data-chart="${id}" role="img" aria-label="${esc(label)}">`;
+  s += tk.map((v) => { const y = Y(v).toFixed(1); return `<line x1="${L}" x2="${R}" y1="${y}" y2="${y}" stroke="#2C3036"/><text x="${L - 8}" y="${(+y + 4).toFixed(1)}" text-anchor="end" font-size="11" fill="#8A8F97">${trimNum(v)}</text>`; }).join('');
+  const xl = [];
+  if (pts.length === 1) xl.push({ x: P[0].X, t: pts[0].xl, a: 'middle' });
+  else {
+    xl.push({ x: P[0].X, t: pts[0].xl, a: 'start' });
+    if (pts.length > 2) { const m = Math.floor((pts.length - 1) / 2); if (P[m].X - P[0].X > 50 && P[P.length - 1].X - P[m].X > 50) xl.push({ x: P[m].X, t: pts[m].xl, a: 'middle' }); }
+    xl.push({ x: P[P.length - 1].X, t: pts[pts.length - 1].xl, a: 'end' });
+  }
+  s += xl.map((o) => `<text x="${o.x}" y="${H - 14}" text-anchor="${o.a}" font-size="11" fill="#8A8F97">${esc(o.t)}</text>`).join('');
+  if (P.length > 1) s += `<polyline points="${P.map((p) => p.X + ',' + p.Y).join(' ')}" fill="none" stroke="${color}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>`;
+  if (P.length <= 24) s += P.map((p) => `<circle cx="${p.X}" cy="${p.Y}" r="3.5" fill="${color}" stroke="#1A1C20" stroke-width="2"/>`).join('');
+  const lp = P[P.length - 1];
+  s += `<circle cx="${lp.X}" cy="${lp.Y}" r="5" fill="${color}" stroke="#1A1C20" stroke-width="2"/>`;
+  const pv = P.length > 1 ? P[P.length - 2] : null;
+  let ly = pv && pv.Y < lp.Y ? lp.Y + 22 : lp.Y - 12;
+  if (ly - 12 < 0) ly = lp.Y + 22;
+  if (ly > B + 8) ly = lp.Y - 12;
+  s += `<text x="${lp.X}" y="${ly}" text-anchor="${lp.X > W / 2 ? 'end' : 'start'}" font-size="13" font-weight="700" fill="#F3F4F1">${esc(pts[pts.length - 1].vl)}</text>`;
+  s += `<rect x="${L - 12}" y="0" width="${R - L + 24}" height="${B + 6}" fill="transparent"/>`;
+  s += `<g class="hov" style="display:none" pointer-events="none"><line y1="${T}" y2="${B}" stroke="#A3A7AE" stroke-dasharray="3 3"/><circle r="6" fill="${color}" stroke="#F3F4F1" stroke-width="2"/><rect y="0" height="22" rx="6" fill="#33373E"/><text y="15" font-size="12" fill="#F3F4F1" text-anchor="middle"></text></g>`;
+  return s + '</svg>';
+}
+function chartShow(svg, cx) {
+  const P = CH[svg.dataset.chart];
+  if (!P || !P.length) return;
+  const r = svg.getBoundingClientRect();
+  const x = ((cx - r.left) / r.width) * 320;
+  let b = P[0];
+  for (const p of P) if (Math.abs(p.X - x) < Math.abs(b.X - x)) b = p;
+  const g = svg.querySelector('.hov');
+  g.style.display = '';
+  const [ln, c, rc, tx] = g.children;
+  ln.setAttribute('x1', b.X); ln.setAttribute('x2', b.X);
+  c.setAttribute('cx', b.X); c.setAttribute('cy', b.Y);
+  tx.textContent = b.tip;
+  let w;
+  try { w = tx.getComputedTextLength(); } catch (e) { w = b.tip.length * 8; }
+  w += 16;
+  const bx = Math.min(Math.max(b.X - w / 2, 0), 320 - w);
+  rc.setAttribute('x', bx); rc.setAttribute('width', w); tx.setAttribute('x', bx + w / 2);
+}
+function chartHideAll(except) {
+  document.querySelectorAll('svg[data-chart] .hov').forEach((g) => { if (!except || !except.contains(g)) g.style.display = 'none'; });
+}
+
+/* ========== 数据页 ========== */
+function vStats() {
+  const ranges = [[7, '近7天'], [30, '近30天'], [90, '近3月'], [0, '全部']];
+  const seg = `<div class="seg" role="tablist" aria-label="时间范围" style="grid-template-columns:repeat(4,minmax(0,1fr));margin-top:16px">${ranges.map(([v, l]) => `<button role="tab" aria-selected="${U.statsRange === v}" class="${U.statsRange === v ? 'on' : ''}" data-a="stats-range" data-v="${v}">${l}</button>`).join('')}</div>`;
+  if (!S.sessions.length && !weightEntries().length) {
+    return `<div class="screen tabs"><h1>数据</h1><div class="card empty mt20">完成第一次训练、记录体重后，<br>这里会出现统计图和表格。</div></div>`;
+  }
+  const from = U.statsRange ? dstr(addDays(new Date(), -(U.statsRange - 1))) : '';
+  const ss = sortedSessions().filter((s) => s.date >= from);
+  const ws = weightEntries().filter((e) => e.d >= from);
+  const vol = ss.reduce((a, s) => a + s.items.reduce((b, it) => b + volOf(it.sets), 0), 0);
+  const fv = fmtVol(vol);
+  const wchg = ws.length >= 2 ? Math.round((ws[ws.length - 1].v - ws[0].v) * 10) / 10 : null;
+  const avg = ss.length ? Math.round(ss.reduce((a, s) => a + (s.end - s.start), 0) / ss.length / 60000) : null;
+  const tile = (k, v, u) => `<div class="tile"><div class="k">${k}</div><div class="v num">${v}<span class="u" style="font-weight:400"> ${u}</span></div></div>`;
+  const tiles = `<div class="tiles mt16">${tile('训练次数', ss.length, '次')}${tile('总容量', fv.v, fv.u)}${tile('体重变化', wchg == null ? '—' : (wchg > 0 ? '+' : wchg < 0 ? '−' : '') + Math.abs(wchg).toFixed(1), 'kg')}${tile('平均用时', avg == null ? '—' : avg, '分钟')}</div>`;
+
+  let wHtml, wSub = '';
+  if (ws.length >= 2) {
+    const t0 = parseD(ws[0].d).getTime(), t1 = parseD(ws[ws.length - 1].d).getTime();
+    const pts = ws.map((e) => ({ x: (parseD(e.d).getTime() - t0) / (t1 - t0), y: e.v, xl: fmtMD(e.d), vl: trimNum(e.v), tip: `${fmtMD(e.d)} · ${trimNum(e.v)} kg` }));
+    wHtml = lineChart('w', pts, '#FF9F4A', `体重趋势折线图，从 ${trimNum(ws[0].v)} kg 到 ${trimNum(ws[ws.length - 1].v)} kg`);
+    wSub = `${trimNum(ws[0].v)} → ${trimNum(ws[ws.length - 1].v)} kg`;
+  } else {
+    wHtml = `<div class="empty">记录 2 天以上的体重后，这里会显示趋势</div>`;
+  }
+
+  const metric = U.partMetric || 'vol';
+  const agg = {};
+  for (const s of ss) for (const it of s.items) agg[it.partId] = (agg[it.partId] || 0) + (metric === 'vol' ? volOf(it.sets) : it.sets.length);
+  const prow = Object.entries(agg).sort((a, b) => b[1] - a[1]);
+  const pmax = prow.length ? prow[0][1] : 0;
+  const bars = prow.length
+    ? `<div class="mt12" role="img" aria-label="各部位${metric === 'vol' ? '训练容量' : '组数'}：${prow.map(([p, v]) => partName(p) + ' ' + Math.round(v)).join('，')}" style="display:flex;flex-direction:column;gap:6px">${prow.map(([pid, v]) => `<div class="hbar"><span class="n">${esc(partName(pid))}</span><div><div class="b" style="width:${pmax ? Math.max(1.5, (v / pmax) * 100) : 0}%"></div></div><span class="v num">${fmtInt(v)}</span></div>`).join('')}</div>`
+    : `<div class="empty">这段时间还没有训练</div>`;
+
+  const exCount = {}, exName = {};
+  for (const s of ss) for (const it of s.items) { exCount[it.exId] = (exCount[it.exId] || 0) + 1; exName[it.exId] = (exById(it.exId) || it).name; }
+  const exIds = Object.keys(exCount).sort((a, b) => exCount[b] - exCount[a]);
+  if (!exIds.includes(U.statsEx)) U.statsEx = exIds[0] || null;
+  let exHtml = `<div class="empty">这段时间还没有训练</div>`, exSub = '', exSel = '';
+  if (U.statsEx) {
+    const series = ss.filter((s) => s.items.some((it) => it.exId === U.statsEx)).map((s) => {
+      const it = s.items.find((x) => x.exId === U.statsEx);
+      return { d: s.date, w: Math.max(...it.sets.map((x) => x.w)), r: Math.max(...it.sets.map((x) => x.r)) };
+    });
+    const bw = series.every((p) => p.w === 0);
+    const unit = bw ? '次' : 'kg';
+    const vals = series.map((p) => (bw ? p.r : p.w));
+    const pts = series.map((p, i) => ({ x: series.length === 1 ? 0.5 : i / (series.length - 1), y: vals[i], xl: fmtMD(p.d), vl: trimNum(vals[i]), tip: `${fmtMD(p.d)} · ${trimNum(vals[i])} ${unit}` }));
+    exHtml = lineChart('ex', pts, '#C8F04A', `${exName[U.statsEx]}每次训练的${bw ? '最多次数' : '最大重量'}折线图`);
+    exSub = `每次训练的${bw ? '最多次数' : '最大重量'} · 最佳 ${trimNum(Math.max(...vals))} ${unit}`;
+    exSel = `<div class="selwrap"><label class="sr" for="exSel">选择动作</label><select id="exSel" data-ch="stats-ex">${exIds.map((id) => `<option value="${id}" ${id === U.statsEx ? 'selected' : ''}>${esc(exName[id])}</option>`).join('')}</select>${I.down('#A3A7AE', 14)}</div>`;
+  }
+
+  const recent = ss.slice().reverse().slice(0, 10);
+  const table = recent.length
+    ? `<table class="tbl"><thead><tr><th scope="col">日期</th><th scope="col">部位</th><th scope="col" class="r">组数</th><th scope="col" class="r">容量 (kg)</th></tr></thead><tbody>${recent.map((s) => `<tr class="click" data-a="session" data-id="${s.id}"><td class="num">${fmtMD(s.date)}</td><td>${esc(s.parts.map(partName).join(' + '))}</td><td class="r num">${s.items.reduce((a, it) => a + it.sets.length, 0)}</td><td class="r num">${fmtInt(s.items.reduce((a, it) => a + volOf(it.sets), 0))}</td></tr>`).join('')}</tbody></table>`
+    : `<div class="empty">这段时间还没有训练</div>`;
+
+  return `<div class="screen tabs"><h1>数据</h1>${seg}${tiles}
+    <section class="card mt16"><div style="display:flex;align-items:baseline;justify-content:space-between;gap:8px"><h2>体重趋势</h2><span class="muted num">${wSub}</span></div>${wHtml}</section>
+    <section class="card mt12"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px"><h2>各部位训练量</h2>
+      <div class="seg" style="grid-template-columns:repeat(2,minmax(0,1fr));padding:3px;background:var(--inner)"><button class="${metric === 'vol' ? 'on' : ''}" style="height:28px;padding:0 10px;font-size:13px" data-a="part-metric" data-v="vol">容量</button><button class="${metric === 'sets' ? 'on' : ''}" style="height:28px;padding:0 10px;font-size:13px" data-a="part-metric" data-v="sets">组数</button></div></div>
+      <p class="muted" style="margin:6px 0 0">${metric === 'vol' ? '容量 = 重量 × 次数，单位 kg' : '完成的总组数'}</p>${bars}</section>
+    <section class="card mt12"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px"><h2>动作进步</h2>${exSel}</div>
+      ${exSub ? `<p class="muted" style="margin:6px 0 0">${esc(exSub)}</p>` : ''}${exHtml}</section>
+    <section class="card mt12"><div style="display:flex;align-items:baseline;justify-content:space-between"><h2>最近训练</h2><span class="muted">点一行看明细</span></div>${table}</section>
+  </div>`;
+}
+
+/* ========== 账户 ========== */
+function planCount(wd) {
+  const p = S.plan[wd];
+  return orderParts(p.parts).reduce((a, pid) => a + exOf(pid).filter((e) => !p.off.includes(e.id)).length, 0);
+}
+function vAccount() {
+  const name = S.name || '我';
+  const today = new Date().getDay();
+  const rows = WEEK_ORDER.map((wd) => {
+    const parts = orderParts(S.plan[wd].parts);
+    return `<button class="row" data-a="go-plan" data-day="${wd}"><span class="day">${WD[wd]}</span>
+      <span class="grow" style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">${parts.length ? parts.map((pid) => `<span class="mini">${esc(partName(pid))}</span>`).join('') : '<span class="muted">休息日</span>'}${wd === today ? '<span class="badge">今天</span>' : ''}</span>
+      ${parts.length ? `<span class="muted" style="white-space:nowrap">${planCount(wd)} 个动作</span>` : ''}${I.right()}</button>`;
+  }).join('');
+  const days = WEEK_ORDER.filter((wd) => orderParts(S.plan[wd].parts).length).length;
+  const total = activeParts().reduce((a, p) => a + exOf(p.id).length, 0);
+  return `<div class="screen tabs">
+    <div class="row-flex" style="gap:14px"><span class="avatar">${esc(name.slice(0, 1).toUpperCase())}</span>
+      <div class="grow"><h1 style="font-size:22px">${esc(name)}</h1><div class="muted" style="margin-top:2px">已记录 ${S.sessions.length} 次训练</div></div>
+      <button class="link" data-a="edit-name">改名字</button></div>
+    <div class="sec"><h2 class="grow">每周训练计划</h2><span class="muted">点某一天修改</span></div>
+    <div class="list">${rows}</div>
+    <div class="sec"><h2>训练量</h2></div>
+    <div class="list" style="padding-right:12px">
+      <div class="row" style="min-height:64px"><div class="grow"><div class="t" style="font-size:15px">每周训练天数</div><div class="s">按上面的计划自动计算</div></div><span><b class="num" style="font-size:20px">${days}</b><span class="muted" style="color:var(--text2)"> 天</span></span></div>
+      <div class="row" style="min-height:64px"><div class="grow"><div class="t" style="font-size:15px">默认组数</div><div class="s">第一次练某个动作时预填的组数</div></div>
+        <div class="stepper sm"><button data-a="defsets" data-d="-1" aria-label="减少默认组数">${I.minus('#F3F4F1', 14)}</button><span class="val num">${S.defaultSets}</span><button data-a="defsets" data-d="1" aria-label="增加默认组数">${I.plus('#F3F4F1', 14)}</button></div></div>
+    </div>
+    <div class="sec"><h2 class="grow">部位与动作库</h2><span class="muted">共 ${total} 个动作</span></div>
+    <div class="list">${activeParts().map((p) => `<button class="row" style="min-height:52px" data-a="go-part" data-id="${p.id}"><span class="grow" style="font-size:15px">${esc(p.name)}</span><span class="muted">${exOf(p.id).length} 个动作</span>${I.right()}</button>`).join('')}
+      <button class="row" style="min-height:52px;color:var(--accent);font-size:15px;font-weight:500;gap:8px" data-a="add-part">${I.plus('#C8F04A')}添加部位</button></div>
+    <div class="sec"><h2>数据备份</h2></div>
+    <div class="list">
+      <button class="row" data-a="export"><span class="grow" style="font-size:15px">导出备份</span><span class="muted">JSON 文件</span>${I.right()}</button>
+      <label class="row" for="importFile" style="cursor:pointer"><span class="grow" style="font-size:15px">从备份恢复</span>${I.right()}</label>
+      <button class="row" data-a="reset"><span class="grow" style="font-size:15px;color:var(--danger)">清除全部数据</span></button>
+    </div>
+    <input type="file" id="importFile" class="sr" accept="application/json,.json">
+    <p class="muted" style="text-align:center;margin:24px 0 0;line-height:1.7">数据只保存在这台手机上<br>换手机或删除图标前，记得先导出备份<br>版本 ${APP_VERSION}</p>
+  </div>`;
+}
+function vPlanEdit(wd) {
+  const plan = S.plan[wd];
+  const sel = orderParts(plan.parts);
+  const groups = sel.map((pid) => {
+    const exs = exOf(pid);
+    const on = exs.filter((e) => !plan.off.includes(e.id)).length;
+    return `<div class="group mt12" style="padding-right:14px"><div class="group-h"><span class="tag strong">${esc(partName(pid))}</span><span class="muted">${exs.length ? `已开启 ${on} / ${exs.length}` : '还没有动作'}</span></div>
+      ${exs.map((e) => { const isOn = !plan.off.includes(e.id); return `<div class="row"><div class="grow"><div class="t" style="${isOn ? '' : 'color:var(--text2)'}">${esc(e.name)}</div><div class="s">${isOn ? esc(lastText(e.id)) : WD[wd] + '不练'}</div></div>
+        <button class="switch ${isOn ? 'on' : ''}" role="switch" aria-checked="${isOn}" aria-label="${esc(e.name)}" data-a="plan-ex" data-day="${wd}" data-id="${e.id}"><i></i></button></div>`; }).join('')}
+      ${!exs.length ? `<button class="row" style="color:var(--accent);font-size:15px;gap:8px" data-a="go-part" data-id="${pid}">${I.plus('#C8F04A')}去添加动作</button>` : ''}</div>`;
+  }).join('');
+  return `<div class="screen">
+    <div class="row-flex"><button class="icon-btn" data-a="pop" aria-label="返回">${I.back('#F3F4F1')}</button><h1 style="font-size:20px">训练计划</h1></div>
+    <div class="seg mt20" role="tablist" aria-label="选择星期" style="grid-template-columns:repeat(7,minmax(0,1fr))">${WEEK_ORDER.map((d) => `<button role="tab" aria-selected="${d === wd}" class="${d === wd ? 'on' : ''}" data-a="plan-day" data-day="${d}">${WD_SHORT[d]}</button>`).join('')}</div>
+    <div class="hint mt16">${I.info()}<p>设置后，每到${WD[wd]}打开 App，只会问这里选中的部位，并且只列出已开启的动作。</p></div>
+    <div class="sec"><h2>${WD[wd]}练哪些部位</h2><span class="muted grow">可多选</span>${sel.length ? `<button class="link" style="color:var(--text2)" data-a="plan-rest" data-day="${wd}">设为休息日</button>` : ''}</div>
+    <div class="chips">${activeParts().map((p) => `<button class="chip ${sel.includes(p.id) ? 'on' : ''}" aria-pressed="${sel.includes(p.id)}" data-a="plan-part" data-day="${wd}" data-id="${p.id}">${esc(p.name)}</button>`).join('')}</div>
+    ${sel.length ? `<div class="sec"><h2>训练动作</h2><span class="muted">关掉的动作那天不会出现</span></div>${groups}` : `<div class="card empty mt16">${WD[wd]}是休息日。<br>选上面的部位，就会变成训练日。</div>`}
+    <button class="btn-primary mt24" data-a="pop">完成</button>
+  </div>`;
+}
+function vPart(pid) {
+  const p = partById(pid);
+  return `<div class="screen">
+    <div class="row-flex"><button class="icon-btn" data-a="pop" aria-label="返回">${I.back('#F3F4F1')}</button><h1 style="font-size:20px">${esc(p.name)} · 动作库</h1></div>
+    ${exEditor(pid)}
+    <button class="btn-danger mt24" style="background:transparent;border:1px solid #3A2422;font-weight:500" data-a="del-part" data-id="${pid}">删除「${esc(p.name)}」这个部位</button>
+    <button class="btn-primary mt12" data-a="pop">完成</button>
+  </div>`;
+}
+
+/* ========== 备份 ========== */
+async function exportData() {
+  const data = JSON.stringify(S, null, 2);
+  const name = `fitness-backup-${todayStr()}.json`;
+  const blob = new Blob([data], { type: 'application/json' });
+  try {
+    const file = new File([blob], name, { type: 'application/json' });
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      await navigator.share({ files: [file], title: '健身记录备份' });
+      return;
+    }
+  } catch (e) { if (e && e.name === 'AbortError') return; }
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = name;
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1500);
+  toast('备份文件已生成');
+}
+function importData(file) {
+  const r = new FileReader();
+  r.onload = () => {
+    try {
+      const o = JSON.parse(r.result);
+      if (!o || !Array.isArray(o.parts) || !Array.isArray(o.sessions) || !Array.isArray(o.exercises)) throw new Error('bad');
+      confirmBox('从备份恢复？', `备份里有 ${o.sessions.length} 次训练、${Object.keys(o.weights || {}).length} 条体重记录。恢复后会覆盖手机上现在的数据。`, '恢复', () => {
+        S = normalize(o);
+        save();
+        Object.assign(U, { stack: [], todayDate: null, weightDraft: null, expanded: null, again: false });
+        render();
+        toast('恢复成功');
+      });
+    } catch (e) { toast('文件格式不对，无法恢复'); }
+  };
+  r.readAsText(file);
+}
+
+/* ========== 路由 ========== */
+function tabbar() {
+  const t = (k, label, icon) => `<button class="tab ${U.tab === k ? 'on' : ''}" data-a="tab" data-k="${k}" ${U.tab === k ? 'aria-current="page"' : ''}>${icon(U.tab === k ? '#C8F04A' : '#8A8F97')}${label}</button>`;
+  return `<nav class="tabbar" aria-label="主导航"><div class="tabbar-in">${t('train', '训练', I.dumbbell)}${t('stats', '数据', I.chart)}${t('account', '账户', I.user)}</div></nav>`;
+}
+function view() {
+  if (!S.setupDone) return U.setupStep === 1 ? vSetup1() : vSetup2();
+  while (U.stack.length) {
+    const top = U.stack[U.stack.length - 1];
+    if (top.name === 'plan') return vPlanEdit(top.day);
+    if (top.name === 'part' && partById(top.id) && !partById(top.id).archived) return vPart(top.id);
+    U.stack.pop();
+  }
+  if (U.tab === 'train') {
+    if (S.active) return vWorkout();
+    if (todaySessions().length && !U.again) return vDone() + tabbar();
+    return vToday() + tabbar();
+  }
+  if (U.tab === 'stats') return vStats() + tabbar();
+  return vAccount() + tabbar();
+}
+function render() { $('#app').innerHTML = view(); }
+function push(v) { v.y = window.scrollY; U.stack.push(v); render(); window.scrollTo(0, 0); }
+function pop() { const v = U.stack.pop(); render(); window.scrollTo(0, v ? v.y : 0); }
+function newItem(e) { return { exId: e.id, name: e.name, partId: e.partId, count: suggestedCount(e.id), confirmed: false, sets: [] }; }
+function abandon() { S.active = null; U.expanded = null; save(); closeModal(); render(); window.scrollTo(0, 0); toast('已放弃本次训练'); }
+
+/* ========== 交互 ========== */
+const ACT = {
+  'setup-toggle': (d) => { const p = partById(d.id); p.archived = !p.archived; save(); render(); },
+  'add-part': () => promptBox('添加部位', '例如：核心、臀', '', (v) => {
+    v = v.trim();
+    if (!v) { toast('请输入部位名称'); return false; }
+    if (activeParts().some((p) => p.name === v)) { toast('这个部位已经有了'); return false; }
+    const old = S.parts.find((p) => p.name === v);
+    if (old) old.archived = false; else S.parts.push({ id: 'p' + uid(), name: v, en: '', archived: false });
+    save(); render();
+  }),
+  'setup-next': () => { if (!activeParts().length) return; U.setupStep = 2; render(); window.scrollTo(0, 0); },
+  'setup-back': () => { U.setupStep = 1; render(); },
+  'setup-part': (d) => { U.setupPart = d.id; render(); },
+  'add-ex': (d) => { const el = $('#newEx'); if (addExercise(d.part, el.value)) { render(); const n = $('#newEx'); if (n) n.focus(); } },
+  'add-sug': (d) => { if (addExercise(d.part, d.name)) render(); },
+  'del-ex': (d) => {
+    const e = exById(d.id); e.archived = true;
+    for (const k in S.plan) S.plan[k].off = S.plan[k].off.filter((x) => x !== d.id);
+    save(); render(); toast(`已删除「${e.name}」，历史记录会保留`);
+  },
+  'setup-done': () => { S.setupDone = true; save(); U.tab = 'train'; U.todayDate = null; render(); window.scrollTo(0, 0); toast('设置完成'); },
+  'tab': (d) => { U.tab = d.k; U.stack = []; render(); window.scrollTo(0, 0); },
+  'go-plan': (d) => push({ name: 'plan', day: +d.day }),
+  'go-part': (d) => push({ name: 'part', id: d.id }),
+  'pop': () => pop(),
+  'plan-day': (d) => { U.stack[U.stack.length - 1].day = +d.day; render(); },
+  'today-part': (d) => { const i = U.todayParts.indexOf(d.id); if (i >= 0) U.todayParts.splice(i, 1); else U.todayParts.push(d.id); render(); },
+  'today-ex': (d) => { const i = U.todayOff.indexOf(d.id); if (i >= 0) U.todayOff.splice(i, 1); else U.todayOff.push(d.id); render(); },
+  'today-add': () => openModal({ type: 'pick', mode: 'today' }),
+  'pick-ex': (d) => {
+    const e = exById(d.id);
+    if (U.modal.mode === 'today') { U.todayExtra.push(e.id); U.todayOff = U.todayOff.filter((x) => x !== e.id); }
+    else { S.active.items.push(newItem(e)); U.expanded = e.id; save(); }
+    renderModal(); render(); toast(`已加入「${e.name}」`);
+  },
+  'pick-new': (d) => {
+    const mode = U.modal.mode;
+    promptBox(`新建「${partName(d.part)}」的动作`, '动作名称', '', (v) => {
+      if (!addExercise(d.part, v)) return false;
+      const e = exOf(d.part).find((x) => x.name === v.trim());
+      if (mode === 'today') U.todayExtra.push(e.id); else { S.active.items.push(newItem(e)); U.expanded = e.id; save(); }
+      render(); openModal({ type: 'pick', mode }); toast(`已加入「${e.name}」`);
+      return false;
+    });
+  },
+  'start': () => startWorkout(),
+  'w-expand': (d) => {
+    U.expanded = d.ex; render();
+    const el = document.querySelector(`[data-card="${d.ex}"]`);
+    if (el) { const r = el.getBoundingClientRect(); if (r.top < 0 || r.top > window.innerHeight * 0.6) window.scrollBy({ top: r.top - 80, behavior: 'smooth' }); }
+  },
+  'w-collapse': () => { U.expanded = null; render(); },
+  'cnt': (d) => { const it = itemOf(d.ex); it.count = Math.min(20, Math.max(1, it.count + Number(d.d))); save(); render(); },
+  'cnt-ok': (d) => { const it = itemOf(d.ex); it.sets = Array.from({ length: it.count }, () => ({ w: '', r: '', done: false })); it.confirmed = true; save(); render(); },
+  'sets': (d) => {
+    const it = itemOf(d.ex);
+    if (+d.d > 0) { if (it.sets.length >= 30) return; it.sets.push({ w: '', r: '', done: false }); }
+    else {
+      if (it.sets.length <= 1) { toast('至少保留一组'); return; }
+      if (it.sets[it.sets.length - 1].done) { toast('最后一组已经完成，不能减少'); return; }
+      it.sets.pop();
+    }
+    save(); render();
+  },
+  'set-done': (d) => markSet(d.ex, +d.i),
+  'w-remove': (d) => {
+    const it = itemOf(d.ex);
+    const go = () => { S.active.items = S.active.items.filter((x) => x !== it); if (U.expanded === d.ex) U.expanded = null; save(); closeModal(); render(); };
+    if (doneSets(it).length) confirmBox('移除这个动作？', '已经完成的组也会一起移除。', '移除', go, true); else go();
+  },
+  'w-add': () => openModal({ type: 'pick', mode: 'workout' }),
+  'w-exit': () => openModal({ type: 'choice', title: '结束训练？', text: '已经打勾的组可以先保存下来。', options: [
+    { label: '保存已完成的部分', cls: 'btn-primary', fn: () => ACT['w-finish']() },
+    { label: '放弃本次训练', cls: 'btn-danger', fn: () => confirmBox('确定放弃？', '本次训练的所有记录都会删除。', '放弃', abandon, true) },
+    { label: '继续训练', fn: closeModal }
+  ] }),
+  'w-finish': () => {
+    const A = S.active;
+    if (!A.items.some((it) => doneSets(it).length)) {
+      openModal({ type: 'choice', title: '还没有完成任何一组', text: '每组填好重量和次数后，点右边的勾才算完成。', options: [
+        { label: '继续训练', cls: 'btn-primary', fn: closeModal },
+        { label: '放弃本次训练', cls: 'btn-danger', fn: abandon }
+      ] });
+      return;
+    }
+    const left = A.items.filter((it) => !itemDone(it)).length;
+    if (left) confirmBox(`还有 ${left} 个动作没做完`, '只会保存已经打勾的组。', '完成训练', finishWorkout);
+    else finishWorkout();
+  },
+  'wt': (d) => {
+    const prev = prevWeight(todayStr());
+    let n = parseNum(U.weightDraft);
+    if (n == null) n = prev ? prev.v : 60;
+    n = Math.max(0, Math.round((n + Number(d.d)) * 10) / 10);
+    U.weightDraft = n.toFixed(1);
+    render();
+  },
+  'wt-save': () => {
+    const n = parseNum(U.weightDraft);
+    if (n == null || n < 20 || n > 400) { toast('请输入正确的体重（kg）'); return; }
+    const t = todayStr();
+    const v = Math.round(n * 10) / 10;
+    const was = S.weights[t];
+    if (was === v) { toast('今天的体重已经保存了'); return; }
+    S.weights[t] = v; save(); U.weightDraft = null; render();
+    toast(was != null ? '体重已更新' : '体重已保存');
+  },
+  'again': () => { U.again = true; U.todayDate = null; render(); window.scrollTo(0, 0); },
+  'session': (d) => openModal({ type: 'session', id: d.id }),
+  'del-session': (d) => confirmBox('删除这条训练记录？', '删除后无法恢复。', '删除', () => { S.sessions = S.sessions.filter((s) => s.id !== d.id); save(); closeModal(); render(); toast('已删除'); }, true),
+  'm-ok': () => {
+    const m = U.modal; if (!m) return;
+    if (m.type === 'prompt') { const v = $('#promptInput').value; if (m.onOk(v) !== false) closeModal(); }
+    else { const fn = m.onOk; closeModal(); fn(); }
+  },
+  'm-choice': (d) => { const fn = U.modal.options[+d.i].fn; closeModal(); fn(); },
+  'm-close': () => closeModal(),
+  'm-bg': (d, el, e) => { if (e.target === el) closeModal(); },
+  'stats-range': (d) => { U.statsRange = +d.v; render(); },
+  'part-metric': (d) => { U.partMetric = d.v; render(); },
+  'defsets': (d) => { S.defaultSets = Math.min(10, Math.max(1, S.defaultSets + Number(d.d))); save(); render(); },
+  'plan-part': (d) => {
+    const p = S.plan[d.day]; const i = p.parts.indexOf(d.id);
+    if (i >= 0) p.parts.splice(i, 1); else p.parts.push(d.id);
+    save(); U.todayDate = null; render();
+  },
+  'plan-rest': (d) => { S.plan[d.day].parts = []; save(); U.todayDate = null; render(); toast(`${WD[d.day]}设为休息日`); },
+  'plan-ex': (d) => {
+    const p = S.plan[d.day]; const i = p.off.indexOf(d.id);
+    if (i >= 0) p.off.splice(i, 1); else p.off.push(d.id);
+    save(); U.todayDate = null; render();
+  },
+  'del-part': (d) => confirmBox(`删除「${partName(d.id)}」？`, '这个部位会从每周计划里移除，以前的训练记录会保留。', '删除', () => {
+    partById(d.id).archived = true;
+    for (const k in S.plan) S.plan[k].parts = S.plan[k].parts.filter((x) => x !== d.id);
+    save(); U.todayDate = null; pop(); toast('已删除');
+  }, true),
+  'edit-name': () => promptBox('你的名字', '输入名字', S.name, (v) => { S.name = v.trim().slice(0, 12); save(); render(); }),
+  'export': () => exportData(),
+  'reset': () => confirmBox('清除全部数据？', '所有部位、动作、训练和体重记录都会删除，建议先导出备份。', '全部清除', () => {
+    localStorage.removeItem(KEY);
+    S = fresh();
+    Object.assign(U, { tab: 'train', stack: [], setupStep: 1, setupPart: null, todayDate: null, again: false, expanded: null, weightDraft: null, statsEx: null });
+    render(); window.scrollTo(0, 0);
+  }, true)
+};
+
+document.addEventListener('click', (e) => {
+  const el = e.target.closest('[data-a]');
+  if (!el || el.disabled) return;
+  const f = ACT[el.dataset.a];
+  if (f) f(el.dataset, el, e);
+});
+document.addEventListener('input', (e) => {
+  const el = e.target;
+  const k = el.dataset && el.dataset.in;
+  if (k === 'set') {
+    const it = itemOf(el.dataset.ex);
+    if (!it) return;
+    it.sets[+el.dataset.i][el.dataset.k] = el.value;
+    save();
+  } else if (k === 'wt') {
+    U.weightDraft = el.value;
+  }
+});
+document.addEventListener('change', (e) => {
+  const el = e.target;
+  if (el.id === 'importFile' && el.files && el.files[0]) { importData(el.files[0]); el.value = ''; }
+  else if (el.dataset && el.dataset.ch === 'stats-ex') { U.statsEx = el.value; render(); }
+});
+document.addEventListener('keydown', (e) => {
+  if (e.key !== 'Enter') return;
+  const el = e.target;
+  if (el.dataset && el.dataset.enter) { e.preventDefault(); ACT[el.dataset.enter](el.dataset, el, e); return; }
+  if (el.dataset && el.dataset.in === 'set') {
+    e.preventDefault();
+    const ex = el.dataset.ex, i = +el.dataset.i;
+    if (el.dataset.k === 'w') { const n = document.querySelector(`input[data-ex="${ex}"][data-i="${i}"][data-k="r"]`); if (n) n.focus(); }
+    else { markSet(ex, i); const n = document.querySelector(`input[data-ex="${ex}"][data-i="${i + 1}"][data-k="w"]`); if (n) n.focus(); }
+  }
+});
+document.addEventListener('pointerdown', (e) => {
+  const svg = e.target.closest && e.target.closest('svg[data-chart]');
+  chartHideAll(svg);
+  if (svg) chartShow(svg, e.clientX);
+});
+document.addEventListener('pointermove', (e) => {
+  const svg = e.target.closest && e.target.closest('svg[data-chart]');
+  if (svg) chartShow(svg, e.clientX);
+  else if (e.pointerType === 'mouse') chartHideAll(null);
+});
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden || U.modal) return;
+  const a = document.activeElement;
+  if (a && (a.tagName === 'INPUT' || a.tagName === 'SELECT')) return;
+  render();
+});
+setInterval(() => {
+  const el = document.getElementById('timer');
+  if (el && S.active) el.textContent = fmtDur(Date.now() - S.active.start);
+}, 1000);
+
+if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
+  window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
+}
+if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(() => {});
+render();
+</script>
+</body>
+</html>
